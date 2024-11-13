@@ -1,18 +1,26 @@
 package stopwatch;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 
 public class InputSystem implements Runnable {
 	private boolean isRun = true;
 	private boolean timeStop = false;
 	private boolean timeHold = false;
 	private boolean timeRerun = false;
+	private final String STOP = "q";
+	private final String HOLD = "h";
+	private final String RERUN = "a";
 
-	BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(System.out));
-	BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+	private InputSystem() {
+
+	}
+
+	private static InputSystem instance = new InputSystem();
+
+	public static InputSystem getInstance() {
+		return instance;
+	}
 
 	public boolean getTimeStop() {
 		return timeStop;
@@ -30,36 +38,37 @@ public class InputSystem implements Runnable {
 	public void run() {
 		while (isRun) {
 			try {
+				BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+				StringBuffer buffer = new StringBuffer();
+
 				String input = reader.readLine();
-
-				String stop = "q";
-
-				if (input.equals(stop)) {
+				System.out.println(input);
+				buffer.append(input);
+				if (buffer.toString().equals(STOP)) {
 					timeStop = true;
 				}
-				if (input.equals("h")) {
+				if (buffer.toString().equals(HOLD)) {
 					timeHold = true;
 					timeRerun = false;
 				}
-				if (input.equals("a")) {
+				if (buffer.toString().equals(RERUN)) {
 					timeHold = false;
 					timeRerun = true;
 				}
 				if (timeStop)
 					if (timeStop) {
 						isRun = false;
+						try {
+							reader.close();
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
 					}
+
 			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		}
-		closeReader();
 	}
 
-	public void closeReader() {
-		try {
-			reader.close();
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-	}
 }
