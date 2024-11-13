@@ -2,8 +2,9 @@ package stopwatch;
 
 public class Stopwatch {
 
-	TimeSystem time = new TimeSystem();
-	InputSystem input = new InputSystem();
+	TimeSystem time = TimeSystem.getInstance();
+	InputSystem input = InputSystem.getInstance();
+
 	private Stopwatch() {
 
 	}
@@ -18,9 +19,7 @@ public class Stopwatch {
 		showMenu();
 		runStopwatch();
 
-		showResult();
 	}
-
 
 	private void showMenu() {
 		System.err.println("[q] STOP");
@@ -33,18 +32,7 @@ public class Stopwatch {
 		Thread inputThread = new Thread(input);
 		timeThread.start();
 		inputThread.start();
-		if(input.getTimeHold()) {
-			timeThread.interrupt();
-		}else if(input.getTimeHold()&&input.getTimeRerun()) {
-			timeThread.start();
-		}else if(input.getTimeStop()) {
-			timeThread.interrupt();
-			System.out.printf(">>> %d분 %d초 소요됨",time.getSec()/60,time.getSec()%60);
-		}
-		
 	}
 
-	private void showResult() {
-
-	}
+	
 }
