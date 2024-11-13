@@ -22,6 +22,7 @@ public class Stopwatch {
 	}
 
 	private void showMenu() {
+		System.out.println("[더조은 스탑워치]");
 		System.err.println("[q] STOP");
 		System.err.println("[h] HOLD");
 		System.err.println("[a] RERUN");
